@@ -1,0 +1,25 @@
+/* @use '_colors-typo';*/
+@import "resets.css";
+@import "header.css";
+@import "form.css";
+@import "footer.css";
+@import "media-queries.css";
+
+main {
+    font-family: 'Oswald', sans-serif;
+    color: #0B0B0B;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    height: 100vh;
+
+    background-color: #3FCDAA;
+
+    position: relative;
+
+}
+
+

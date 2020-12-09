@@ -1,0 +1,45 @@
+/* Mobile view */
+@media only screen and (max-width:600px){
+    .headline {
+        font-size: 3em;
+        color: #f0f0f0;
+        text-align: center;
+        width: 50%;
+        position: absolute;
+        top: 70px;
+    }
+}
+
+/* Tablet & Desktop view */
+@media only screen and (min-width: 600px){
+    .headline {
+        font-size: 4em;
+        color: #f0f0f0;
+        text-align: center;
+        width: 50%;
+        position: absolute;
+        top: 50px;
+    }
+    .holder label {
+        font-size: 2em;
+    }
+
+    .form {
+        min-width: 540px;
+        max-width: 660px;
+        height: 350px;
+    }
+    .btn-large {
+        font-size: 2em;
+        width: 320px;
+        padding: 5px 0;
+        top: 570px;
+    }
+    header {
+        height: 70px;
+        padding: 20px 30px;
+    }
+    nav img {
+        width: 30px;
+    }
+}

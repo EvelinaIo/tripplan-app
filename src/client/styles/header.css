@@ -1,0 +1,15 @@
+header {
+    padding: 12px 20px;
+    height: 50px;
+    transition: ease all .5s;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+nav img {
+    width: 25px;
+}
