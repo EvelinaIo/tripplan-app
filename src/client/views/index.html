@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>TRIPPLAN</title>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/base.css">
+
+</head>
+<body>
+    <header>
+        <nav>
+            <img class="menu" src="../media/menu.svg">
+            <img class="search" src="../media/search.svg">
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class ="headline">
+            Youn new adventure starts here.
+        </div>
+        <div class="form">
+          <div class ="holder location">
+            <label for="location">Where to?</label>
+            <input type="text" id="location" placeholder="Enter a location (e.g. Vietnam)">
+          </div>
+          <div class ="holder date">
+            <label for="date">When to?</label>
+            <input type="date" id="departure" placeholder="Departure">
+            <input type="date" id="arrival" placeholder="Arrival">
+          </div>
+        </div>
+        <button class="btn-large" id="generate" type = "submit">SUBMIT</button>        
+    </main>
+    <footer>Powered by @Udacity</footer>
+
+</body>
+</html>
