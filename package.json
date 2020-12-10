@@ -1,0 +1,33 @@
+{
+  "name": "tripplan-app",
+  "version": "1.0.0",
+  "description": "A travel app that obtains a desired trip location & date from the user, and displays weather and an image of the location using information obtained from external APIs.",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EvelinaIo/tripplan-app.git"
+  },
+  "keywords": [
+    "app",
+    "node",
+    "js",
+    "express",
+    "webpack",
+    "SASS"
+  ],
+  "author": "Evelina Ioannou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EvelinaIo/tripplan-app/issues"
+  },
+  "homepage": "https://github.com/EvelinaIo/tripplan-app#readme"
+}
