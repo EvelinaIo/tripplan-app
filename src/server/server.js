@@ -20,12 +20,15 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Initialize the main project folder
-app.use(express.static('website'));
+app.use(express.static('dist'));
 
 // Setup Server
-const port = 3000;
+const port = 8081;
 const server = app.listen(port, ()=> {console.log(`Server is running on port ${port}`);})
 
+app.get('/', (request, response) => {
+    response.sendFile('/dist/index.html', { root: __dirname + '/..' })
+})
 //GET Route 
 app.get('/getData', (request, response) => {
     console.log(projectData);
