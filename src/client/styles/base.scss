@@ -1,0 +1,43 @@
+$primary-color: #3FCDAA;
+$secondary-color: #f0f0f0;
+$body-color: #0B0B0B;
+
+header {
+    padding: 12px 20px;
+    height: 50px;
+    transition: ease all .5s;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+nav img {
+    width: 25px;
+}
+
+main {
+    color: $body-color;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    height: 100vh;
+
+    background-color: $primary-color;
+
+    position: relative;
+
+}
+
+footer {
+    background-color: $primary-color;
+    text-align: center;
+    padding: 12px 0;
+    color: $secondary-color;
+}
+
