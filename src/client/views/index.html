@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
     <title>TRIPPLAN</title>
-    <link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/base.css">
-
 </head>
 <body>
     <header>
@@ -20,7 +17,7 @@
         <div class ="headline">
             Youn new adventure starts here.
         </div>
-        <div class="form">
+        <form class="form">
           <div class ="holder location">
             <label for="location">Where to?</label>
             <input type="text" id="location" placeholder="Enter a location (e.g. Vietnam)">
@@ -30,10 +27,10 @@
             <input type="date" id="departure" placeholder="Departure">
             <input type="date" id="arrival" placeholder="Arrival">
           </div>
-        </div>
-        <button class="btn-large" id="generate" type = "submit">SUBMIT</button>        
+        </form>
+        <button class="btn-large" id="generate" type = "submit">SUBMIT</button>
+        <div id="error-msg"></div>
     </main>
     <footer>Powered by @Udacity</footer>
-
 </body>
 </html>
