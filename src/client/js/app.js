@@ -1,13 +1,6 @@
 /* Global Variables */
 const button = document.getElementById('generate');
 
-// DOM values
-const dateOutput = document.getElementById('date');
-const tempOutput = document.getElementById('temp');
-const feelInput = document.getElementById('feelings');
-const content = document.getElementById('content');
-const entry = document.querySelector('.entry');
-
 // Create a new date instance dynamically with JS
 let d = new Date();
 let newDate = `${d.getMonth()+1}|${d.getDate()}|${d.getFullYear()}`;
@@ -16,78 +9,53 @@ let newDate = `${d.getMonth()+1}|${d.getDate()}|${d.getFullYear()}`;
 button.addEventListener('click', performAction);
 
 // Promises for actions after click
-function performAction(event) {
+export async function performAction(event) {
     event.preventDefault()
-    // Get user's input
-    const newZip = document.getElementById('zip').value;
-    const newFeel = feelInput.value;
-    const date = newDate;
-    // Create url
-    const url = baseURL + newZip + apiId;
-    if(!newZip) {
-        alert("Please insert a valid zip code")
-    } else {
-    // Get data from Open Weather API 
-    getWeather (url)
-        .then (function(receivedData) {
-            // Add data to the post route
-            const newTemp = receivedData.main.temp;
-            const city = receivedData.name;
-            const icon = receivedData.weather[0].icon;
-            postData('/addData', { date, city, icon, newTemp, newFeel })
-            .then (updateUI());
-        })
-    }
+
+    // Initiate error message
+    const errorMsg = document.getElementById('error-msg');
+    errorMsg.style.display = 'none';
+    errorMsg.innerHTML = '';
+    
+    // Get location
+    const newLocation = document.getElementById('location').value;
+    console.log(`Location: ${newLocation}`);
+    if(newLocation == '') {
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = 'Please insert location';
+        document.getElementById('location').required = true;
+        return
+    } 
+
+    
+     // Store data from api in apiData after running post request to server
+     let geoData = await getGeo('http://localhost:8081/geo', newLocation)
+     .then (geoData => {
+         const latitude = geoData.geonames[0].lat;
+         const longitude = geoData.geonames[0].lng;
+         const country = geoData.geonames[0].countryName;
+         const population = geoData.geonames[0].population;
+         console.log(`Latitude: ${latitude}, Longitude:${longitude}, Country: ${country}, Population: ${population}`);
+         const cityData = {latitude, longitude, country, population};
+         console.log(cityData);
+    })
 }
 
-//Async function for openweather API
-async function getWeather (url) {
-    const request = await fetch(url)
-    try {
-        const receivedData = await request.json();
-        console.log(receivedData);
-        return receivedData;
-    } catch (error) {
-        console.log('error', error);
-        content.innerHTML = 'Please insert Zip code and your feelings.';
-    }
-}
-
-//Async function for post route
-async function postData(url ='', data = {}) {
-    const response = await fetch(url, {
+// Async function to post url to our server and retrieve external api data
+export async function getGeo(url, newLocation) {
+    let response = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
-            'Content-Type': 'application/json',
-        },
-        // Body data type must match "Content-Type" header        
-        body: JSON.stringify(data),
-    });
-    try {
-        const newData = await response.json();
-        console.log(newData);
-        return newData;
-    } catch (error) {
-        console.log('error', error);
+            'Content-Type': 'text/plain',
+            },
+            // Body data type must match "Content-Type" header        
+            body: newLocation,
+            })
+        try{
+            const responseJSON = await response.json();
+            return responseJSON;
+        } catch(error) {
+            console.log(error)
+        }
     }
-}
-
-//Async function for updating UI
-async function updateUI() {
-    const response = await fetch('/getData');
-    try {
-        const updateData = await response.json();
-        console.log(updateData);
-        // Update date innerHTML
-        dateOutput.innerHTML = `${updateData.date}, ${updateData.city}`;
-        // Update temp div innerHTML
-        tempOutput.innerHTML = `<img class="icon" src="http://openweathermap.org/img/wn/${updateData.icon}@2x.png" alt="Weather Icon">${updateData.newTemp.toFixed(0)}\xb0C`;
-        // Update content div innerHTML
-        content.innerHTML = updateData.newFeel;
-        entry.classList.remove("hide");
-    } catch (error) {
-        console.log('error', error);
-        content.innerHTML = 'Please insert Zip code and your feelings.';
-    }
-}
