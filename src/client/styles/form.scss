@@ -2,6 +2,7 @@ $primary-color: #3FCDAA;
 $secondary-color: #f0f0f0;
 $body-color: #0B0B0B;
 $small-heading: 1.5em;
+$error-color: #d30000;
 
 .form {
     position: absolute;
@@ -75,4 +76,19 @@ input[type="date"]:focus:before,
     right: 50%;
     transform: translate(-50%, -50%);
     transition: ease all .5s;
+}
+
+#error-msg {
+    font-size: 1em;
+    text-align: center;
+    color: $error-color;
+    display: none;
+    position: absolute;
+    top: 620px;
+    min-width: 300px;
+    height: 25px;
+    margin: 10px;
+    background-color: $secondary-color;
+    padding: 5px;
+    border-radius: 5px;
 }
