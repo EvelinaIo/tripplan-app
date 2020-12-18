@@ -1,7 +1,7 @@
 // Entry point for Webpack build tool
 
-import {getWeather} from './js/app.js';
-import {postData} from './js/app.js';
+import {getGeo} from './js/app.js';
+import {performAction} from './js/app.js';
 
 import menu from './media/menu.svg';
 import search from './media/search.svg';
@@ -16,6 +16,6 @@ alert('I EXIST');
 
 
 export {
-    getWeather,
-    postData
+    getGeo,
+    performAction
 }
