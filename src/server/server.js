@@ -46,6 +46,10 @@ const GEO_USER = `&username=${process.env.GEO_USER}`;
 const GEO_BASE = 'http://api.geonames.org/searchJSON?q=';
 const GEO_ROWS = '&maxRows=1';
 
+const WEATHER_BASE = 'https://api.weatherbit.io/v2.0/forecast/daily?';
+const WEATHER_KEY = `&key=${process.env.WEATHER_KEY}`;
+
+/* Geonames API */
 app.post('/geo', geoResponse)
 
 async function geoResponse(req, res) {
@@ -58,6 +62,25 @@ async function geoResponse(req, res) {
         const geoJSON = await geoResponse.json();
         console.log(geoJSON);
         res.send(geoJSON);
+    } catch(error){
+        console.log(error);
+    }
+}
+
+/* Weatherbit API */
+app.post('/weather', weatherResponse)
+
+async function weatherResponse(req, res) {
+    console.log(`Lat & Lng is: ${req.body}`);
+    const WEATH_LAT = req.body.lat;
+    const WEATH_LNG = req.body.lng;
+    const newWeathUrl = WEATHER_BASE + `lat=${WEATH_LAT}&lon=${WEATH_LNG}` + WEATHER_KEY;
+    console.log(newWeathUrl);
+    const weatherResponse = await fetch(newWeathUrl);
+    try {
+        const weatherJSON = await weatherResponse.json();
+        console.log(weatherJSON);
+        res.send(weatherJSON);
     } catch(error){
         console.log(error);
     }
