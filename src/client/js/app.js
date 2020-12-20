@@ -1,5 +1,6 @@
-import {getTimeRemaining} from './dateCount.js'
-import {extractCityData} from './extractions.js'
+import {getTimeRemaining} from './dateCount.js';
+import {callApis} from './apiCalls.js';
+
 /* Global Variables */
 const button = document.getElementById('generate');
 
@@ -56,32 +57,20 @@ export async function performAction(event) {
         return
     }
     
+    // Initiate allData object to store all user input
+    let allData = {};
+    allData["userInput"]= { newLocation, newDepart, newReturn, daysUntilDepart, daysUntilReturn, tripDuration };
+    console.log(allData);
     
-
-    // Store data from api in geoData after running post request to server
-    let geoData = await getGeo('http://localhost:8081/geo', newLocation)
-    .then (geoData => extractCityData(geoData))
-
+    // Run callApis function to retrieve all data from api calls, then updateUI using that data
+    allData = await callApis(allData)
+    .then(updateUI(allData))
 }
 
-// Async function to post url to our server and retrieve external api data
-export async function getGeo(url, newLocation) {
-    let response = await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'text/plain',
-            },
-            // Body data type must match "Content-Type" header        
-            body: newLocation,
-            })
-        try{
-            const geoJSON = await response.json();
-            return geoJSON;
-        } catch(error) {
-            console.log(error)
-        }
+function updateUI(allData) {
+    console.log(allData);
 }
+
 
 // Call 16 day forecast if timeUntilDepart is < 16 days
 // Call Historical weather if timeUntilDepart is > 16 days
