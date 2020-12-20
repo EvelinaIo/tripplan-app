@@ -1,8 +1,10 @@
 // Entry point for Webpack build tool
 import {performAction} from './js/app.js';
-import {getGeo} from './js/app.js';
 import {getTimeRemaining} from './js/dateCount.js';
-import {extractCityData} from './js/extractions.js'
+import {callApis} from './js/apiCalls.js';
+import {callServer} from './js/apiCalls.js';
+import {extractCityData} from './js/extractions.js';
+
 
 import menu from './media/menu.svg';
 import search from './media/search.svg';
@@ -18,6 +20,7 @@ alert('I EXIST');
 export {
     getTimeRemaining,
     performAction,
-    getGeo,
-    extractCityData
+    callApis,
+    callServer,
+    extractCityData,
 }
