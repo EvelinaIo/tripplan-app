@@ -1,9 +1,7 @@
+import {getTimeRemaining} from './dateCount.js'
+import {extractCityData} from './extractions.js'
 /* Global Variables */
 const button = document.getElementById('generate');
-
-// Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = `${d.getMonth()+1}|${d.getDate()}|${d.getFullYear()}`;
 
 // Add event listener for Generate
 button.addEventListener('click', performAction);
@@ -27,18 +25,43 @@ export async function performAction(event) {
         return
     } 
 
+    // Get departure date
+    const newDepart = document.getElementById('departure').value;
+    console.log(`Departure: ${newDepart}`);
+    if(newDepart == '') {
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = 'Please insert Departure Date';
+        document.getElementById('departure').required = true;
+        return
+    }
+
+    // Get return date
+    const newReturn = document.getElementById('return').value;
+    console.log(`Return: ${newReturn}`);
+    if(newReturn == '') {
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = 'Please insert Return Date';
+        document.getElementById('return').required = true;
+        return
+    }
+
+    const daysUntilDepart = getTimeRemaining(newDepart);
+    const daysUntilReturn = getTimeRemaining(newReturn);
+    const tripDuration = daysUntilReturn - daysUntilDepart;
+
+    if (tripDuration<0) {
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = 'Your Return is sooner that your Depart. Please insert valid dates.';
+        document.getElementById('return').required = true;
+        return
+    }
     
-     // Store data from api in apiData after running post request to server
-     let geoData = await getGeo('http://localhost:8081/geo', newLocation)
-     .then (geoData => {
-         const latitude = geoData.geonames[0].lat;
-         const longitude = geoData.geonames[0].lng;
-         const country = geoData.geonames[0].countryName;
-         const population = geoData.geonames[0].population;
-         console.log(`Latitude: ${latitude}, Longitude:${longitude}, Country: ${country}, Population: ${population}`);
-         const cityData = {latitude, longitude, country, population};
-         console.log(cityData);
-    })
+    
+
+    // Store data from api in geoData after running post request to server
+    let geoData = await getGeo('http://localhost:8081/geo', newLocation)
+    .then (geoData => extractCityData(geoData))
+
 }
 
 // Async function to post url to our server and retrieve external api data
@@ -53,9 +76,12 @@ export async function getGeo(url, newLocation) {
             body: newLocation,
             })
         try{
-            const responseJSON = await response.json();
-            return responseJSON;
+            const geoJSON = await response.json();
+            return geoJSON;
         } catch(error) {
             console.log(error)
         }
-    }
+}
+
+// Call 16 day forecast if timeUntilDepart is < 16 days
+// Call Historical weather if timeUntilDepart is > 16 days
