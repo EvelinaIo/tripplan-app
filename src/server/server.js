@@ -18,8 +18,8 @@ const fetch = require('node-fetch');
 
 /* Middleware*/
 //Here we are configuring express to use body-parser as middle-ware.
-//app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.text());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Cors for cross origin allowance
 app.use(cors());
@@ -49,19 +49,23 @@ const GEO_ROWS = '&maxRows=1';
 const WEATHER_BASE = 'https://api.weatherbit.io/v2.0/forecast/daily?';
 const WEATHER_KEY = `&key=${process.env.WEATHER_KEY}`;
 
+// Initialize object allData to store all user/api responses and send back to client
+const allData = [];
+
 /* Geonames API */
 app.post('/geo', geoResponse)
 
 async function geoResponse(req, res) {
-    console.log(`Location is: ${req.body}`);
-    const GEO_LOC = req.body;
+    console.log(req.body);
+    console.log(`Location is: ${req.body.userInput.newLocation}`);
+    const GEO_LOC = req.body.userInput.newLocation;
     const newGeoUrl = GEO_BASE + GEO_LOC + GEO_ROWS + GEO_USER;
     console.log(newGeoUrl);
-    const geoResponse = await fetch(newGeoUrl);
+    const response = await fetch(newGeoUrl);
     try {
-        const geoJSON = await geoResponse.json();
-        console.log(geoJSON);
-        res.send(geoJSON);
+        const responseJSON = await response.json();
+        console.log(responseJSON);
+        res.send(responseJSON);
     } catch(error){
         console.log(error);
     }
@@ -71,9 +75,9 @@ async function geoResponse(req, res) {
 app.post('/weather', weatherResponse)
 
 async function weatherResponse(req, res) {
-    console.log(`Lat & Lng is: ${req.body}`);
-    const WEATH_LAT = req.body.lat;
-    const WEATH_LNG = req.body.lng;
+    console.log(`Lat & Lng is: ${req.body.cityData}`);
+    const WEATH_LAT = req.body.cityData.latitude;
+    const WEATH_LNG = req.body.cityData.longitude;
     const newWeathUrl = WEATHER_BASE + `lat=${WEATH_LAT}&lon=${WEATH_LNG}` + WEATHER_KEY;
     console.log(newWeathUrl);
     const weatherResponse = await fetch(newWeathUrl);
