@@ -9,8 +9,9 @@ export async function callApis (allData) {
     console.log(allData.cityData);
 
     const weatherData = await callServer('http://localhost:8081/weather', allData)
-    allData['weatherData'] = extractWeatherData(weatherData);
-
+    allData['weatherData'] = extractWeatherData(weatherData, allData);
+    
+    console.log(allData.weatherData);
     return allData;
 }
 
