@@ -18,7 +18,7 @@ nav img {
     width: 25px;
 }
 
-main {
+.container {
     color: $body-color;
 
     display: flex;
@@ -39,5 +39,6 @@ footer {
     text-align: center;
     padding: 12px 0;
     color: $secondary-color;
+    font-size: 0.5em;
 }
 

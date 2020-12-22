@@ -4,11 +4,13 @@ $secondary-color: #f0f0f0;
 $body-color: #0B0B0B;
 $small-heading: 1.5em;
 $error-color: #d30000;
+$medium-heading-desk: 2em;
+
 
 .form {
     position: absolute;
     min-width: 300px;
-    height: 300px;
+    min-height: 300px;
     top: 300px;
     margin: 15px;
     background-color: $secondary-color;
