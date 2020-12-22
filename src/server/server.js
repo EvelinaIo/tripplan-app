@@ -49,6 +49,10 @@ const GEO_ROWS = '&maxRows=1';
 const WEATHER_BASE = 'https://api.weatherbit.io/v2.0/forecast/daily?';
 const WEATHER_KEY = `&key=${process.env.WEATHER_KEY}`;
 
+const PIXABAY_KEY = `key=${process.env.PIXABAY_KEY}`;
+const PIXABAY_TYPE = '&image_type=photo';
+const PIXABAY_BASE = 'https://pixabay.com/api/?'
+
 // Initialize object allData to store all user/api responses and send back to client
 const allData = [];
 
@@ -85,6 +89,25 @@ async function weatherResponse(req, res) {
         const weatherJSON = await weatherResponse.json();
         console.log(weatherJSON);
         res.send(weatherJSON);
+    } catch(error){
+        console.log(error);
+    }
+}
+
+/* Pixabay API */
+app.post('/photo', photoResponse)
+
+async function photoResponse(req, res) {
+    console.log(`Location: ${req.body.userInput.newLocation}`);
+    const PIXABAY_PLACE = `&q=${req.body.userInput.newLocation}`;
+    
+    const newPhotoUrl = PIXABAY_BASE + PIXABAY_KEY +PIXABAY_PLACE + PIXABAY_TYPE;
+    console.log(newPhotoUrl);
+    const photoResponse = await fetch(newPhotoUrl);
+    try {
+        const photoJSON = await photoResponse.json();
+        console.log(photoJSON);
+        res.send(photoJSON);
     } catch(error){
         console.log(error);
     }

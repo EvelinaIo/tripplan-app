@@ -1,6 +1,7 @@
 const fetch = require('node-fetch')
 import {extractCityData} from './extractions.js'
 import {extractWeatherData} from './extractions.js'
+import {extractPhotoData} from './extractions.js'
 
 export async function callApis (allData) {
     //Call Geonames Api
@@ -10,8 +11,12 @@ export async function callApis (allData) {
 
     const weatherData = await callServer('http://localhost:8081/weather', allData)
     allData['weatherData'] = extractWeatherData(weatherData, allData);
-    
     console.log(allData.weatherData);
+
+    const photoData = await callServer('http://localhost:8081/photo', allData)
+    allData['photoData'] = extractPhotoData(photoData);
+    console.log(allData.photoData);
+    
     return allData;
 }
 

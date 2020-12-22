@@ -4,6 +4,7 @@ import {getTimeRemaining} from './js/dateCount.js';
 import {callApis} from './js/apiCalls.js';
 import {callServer} from './js/apiCalls.js';
 import {extractCityData} from './js/extractions.js';
+import {extractPhotoData} from './js/extractions.js';
 
 
 import menu from './media/menu.svg';
@@ -23,4 +24,5 @@ export {
     callApis,
     callServer,
     extractCityData,
+    extractPhotoData
 }

@@ -1,8 +1,11 @@
 import {getTimeRemaining} from './dateCount.js';
 import {callApis} from './apiCalls.js';
+import {formatDate} from './extractions.js';
 
 /* Global Variables */
 const button = document.getElementById('generate');
+const headline = document.querySelector('.headline');
+const container = document.querySelector('.container');
 
 // Add event listener for Generate
 button.addEventListener('click', performAction);
@@ -59,16 +62,18 @@ export async function performAction(event) {
     
     // Initiate allData object to store all user input
     let allData = {};
-    allData["userInput"]= { newLocation, newDepart, newReturn, daysUntilDepart, daysUntilReturn, tripDuration };
+    allData["userInput"]= { newLocation, newDepart: formatDate(newDepart), newReturn: formatDate(newReturn), daysUntilDepart, daysUntilReturn, tripDuration };
     console.log(allData);
     
     // Run callApis function to retrieve all data from api calls, then updateUI using that data
-    allData = await callApis(allData)
-    .then(updateUI(allData))
+    allData = await callApis(allData);
+
+
+    updateUI(allData);
 }
 
 function updateUI(allData) {
-    console.log(allData);
+    console.log('I reached this part!');    
 }
 
 

@@ -37,7 +37,15 @@ export function extractWeatherData(weatherData, allData) {
     return forecastData;
 }
 
-function formatDate (input) {
+export function extractPhotoData(photoData) {
+    const photoUrl = photoData.hits[0].largeImageURL;
+    const pageUrl = photoData.hits[0].pageURL;
+
+    return {photoUrl, pageUrl};
+} 
+
+// Format date received from yyyy/mm/dd to dd.mm.yy
+export function formatDate (input) {
     var datePart = input.match(/\d+/g),
     year = datePart[0].substring(2), // get only two digits
     month = datePart[1], day = datePart[2];
