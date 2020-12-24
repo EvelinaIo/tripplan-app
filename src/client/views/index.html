@@ -34,5 +34,14 @@
         <a href='index.html' class="btn-return no-print">Go Back</a>
     </main>
     <footer>Powered by @Udacity. Photo credits <a href='https://pixabay.com' target="_blank">@Pixabay</a></footer>
+    <script>
+      // Check that service workers are supported
+      if ('serviceWorker' in navigator) {
+          // Use the window load event to keep the page load performant
+          window.addEventListener('load', () => {
+              navigator.serviceWorker.register('/service-worker.js');
+          });
+      }
+     </script>
 </body>
 </html>
