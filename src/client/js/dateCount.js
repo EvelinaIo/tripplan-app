@@ -13,13 +13,13 @@ export function getTimeRemaining(endtime){
     const endDate = new Date(endtime).toISOString();
     console.log(endDate);
     const total = Date.parse(endDate) - Date.parse(nowDate);
-    console.log(total);
     // Convert the milliseconds to days
     const days = Math.floor( total/(1000*60*60*24));
+    console.log(days);
 
-    if (days<1){
-      alert("Sorry, no time travel available.")
+    if (days<0){
       console.log("Date inserted is in the past")
+      return null
     } else {
       console.log(days);
       return days;

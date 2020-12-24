@@ -1,13 +1,12 @@
 import {getTimeRemaining} from './dateCount.js';
 import {callApis} from './apiCalls.js';
 import {formatDate} from './extractions.js';
+import {updateUI} from './resultsUI.js'
 
 /* Global Variables */
 const button = document.getElementById('generate');
-const headline = document.querySelector('.headline');
-const container = document.querySelector('.container');
 
-// Add event listener for Generate
+// Add event listener for button with generate id
 button.addEventListener('click', performAction);
 
 // Promises for actions after click
@@ -49,33 +48,36 @@ export async function performAction(event) {
         return
     }
 
+    // Calculate days untile departure, return and trip duration
     const daysUntilDepart = getTimeRemaining(newDepart);
     const daysUntilReturn = getTimeRemaining(newReturn);
     const tripDuration = daysUntilReturn - daysUntilDepart;
+    console.log(tripDuration);
 
+    // Make sure return date is not sooner that departure
     if (tripDuration<0) {
         errorMsg.style.display = 'block';
         errorMsg.innerHTML = 'Your Return is sooner that your Depart. Please insert valid dates.';
         document.getElementById('return').required = true;
         return
     }
+
+    if (daysUntilDepart == null || daysUntilReturn == null) {
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = 'Sorry, no time travel available. Please insert valid dates.';
+        document.getElementById('return').required = true;
+        return
+    }
     
     // Initiate allData object to store all user input
     let allData = {};
-    allData["userInput"]= { newLocation, newDepart: formatDate(newDepart), newReturn: formatDate(newReturn), daysUntilDepart, daysUntilReturn, tripDuration };
-    console.log(allData);
+    // Store newDepart and newReturn 
+    allData["userInput"]= { newLocation , newDepart: formatDate(newDepart), newReturn: formatDate(newReturn), daysUntilDepart, daysUntilReturn, tripDuration };
     
     // Run callApis function to retrieve all data from api calls, then updateUI using that data
     allData = await callApis(allData);
 
-
+    // Update UI with data from user and all 3 external apis
     updateUI(allData);
 }
 
-function updateUI(allData) {
-    console.log('I reached this part!');    
-}
-
-
-// Call 16 day forecast if timeUntilDepart is < 16 days
-// Call Historical weather if timeUntilDepart is > 16 days
