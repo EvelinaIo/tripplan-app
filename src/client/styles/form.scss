@@ -1,14 +1,18 @@
 $primary-color: #3FCDAA;
-$secondary-color: #f0f0f0;
+$hover-color: #189e7d;
+$secondary-color: #fafafa;
 $body-color: #0B0B0B;
 $small-heading: 1.5em;
 $error-color: #d30000;
+$medium-heading-desk: 2em;
+
 
 .form {
-    position: absolute;
-    min-width: 300px;
-    height: 300px;
-    top: 300px;
+    
+    display: flex;
+    flex-direction: column;
+    height: auto;
+
     margin: 15px;
     background-color: $secondary-color;
     padding: 15px;
@@ -29,8 +33,6 @@ $error-color: #d30000;
         transition: ease all .5s;
     }
 }
-
-
 
 .holder input {
         outline: 0.5px solid $body-color;
@@ -63,19 +65,32 @@ input[type="date"]:focus:before,
     background-color: $primary-color;
     color: $secondary-color;
     font-size: $small-heading;
-    position: absolute;
     text-align: center;
     margin: 0 auto;
     padding: 3px 0;
     border: none;
     border-radius: 3px;
     cursor: pointer;
-    position: absolute;
-    top: 580px;
-    left: 50%;
-    right: 50%;
-    transform: translate(-50%, -50%);
     transition: ease all .5s;
+    &:hover {
+        background-color: $hover-color;
+    }
+}
+
+.btn-print {
+    width: 170px;
+    background-color: $primary-color;
+    color: $secondary-color;
+    font-size: $small-heading;
+    text-align: center;
+    margin: 0 auto;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: ease all .5s;
+    &:hover {
+        background-color: $hover-color;
+    }
 }
 
 #error-msg {
@@ -86,7 +101,7 @@ input[type="date"]:focus:before,
     position: absolute;
     top: 620px;
     min-width: 300px;
-    height: 25px;
+    min-height: 25px;
     margin: 10px;
     background-color: $secondary-color;
     padding: 5px;

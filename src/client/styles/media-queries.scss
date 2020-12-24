@@ -1,7 +1,7 @@
 $large-heading-mob: 3em;
 $large-heading-desk: 5em;
 $medium-heading-desk: 2em;
-$secondary-color: #f0f0f0;
+$secondary-color: #fafafa;
 
 /* Mobile view */
 @media only screen and (max-width:600px){
@@ -10,8 +10,10 @@ $secondary-color: #f0f0f0;
         color: $secondary-color;
         text-align: center;
         width: 50%;
-        position: absolute;
-        top: 70px;
+        margin: 15px auto;
+    }
+    .btn-large {
+        top: 580px;
     }
 }
 
@@ -22,8 +24,7 @@ $secondary-color: #f0f0f0;
         color: $secondary-color;
         text-align: center;
         width: 50%;
-        position: absolute;
-        top: 50px;
+        margin: 15px auto;
     }
     .holder label {
         font-size: $medium-heading-desk;

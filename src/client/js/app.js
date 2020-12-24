@@ -1,11 +1,12 @@
+import {getTimeRemaining} from './dateCount.js';
+import {callApis} from './apiCalls.js';
+import {formatDate} from './extractions.js';
+import {updateUI} from './resultsUI.js'
+
 /* Global Variables */
 const button = document.getElementById('generate');
 
-// Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = `${d.getMonth()+1}|${d.getDate()}|${d.getFullYear()}`;
-
-// Add event listener for Generate
+// Add event listener for button with generate id
 button.addEventListener('click', performAction);
 
 // Promises for actions after click
@@ -27,35 +28,56 @@ export async function performAction(event) {
         return
     } 
 
+    // Get departure date
+    const newDepart = document.getElementById('departure').value;
+    console.log(`Departure: ${newDepart}`);
+    if(newDepart == '') {
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = 'Please insert Departure Date';
+        document.getElementById('departure').required = true;
+        return
+    }
+
+    // Get return date
+    const newReturn = document.getElementById('return').value;
+    console.log(`Return: ${newReturn}`);
+    if(newReturn == '') {
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = 'Please insert Return Date';
+        document.getElementById('return').required = true;
+        return
+    }
+
+    // Calculate days untile departure, return and trip duration
+    const daysUntilDepart = getTimeRemaining(newDepart);
+    const daysUntilReturn = getTimeRemaining(newReturn);
+    const tripDuration = daysUntilReturn - daysUntilDepart;
+    console.log(tripDuration);
+
+    // Make sure return date is not sooner that departure
+    if (tripDuration<0) {
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = 'Your Return is sooner that your Depart. Please insert valid dates.';
+        document.getElementById('return').required = true;
+        return
+    }
+
+    if (daysUntilDepart == null || daysUntilReturn == null) {
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = 'Sorry, no time travel available. Please insert valid dates.';
+        document.getElementById('return').required = true;
+        return
+    }
     
-     // Store data from api in apiData after running post request to server
-     let geoData = await getGeo('http://localhost:8081/geo', newLocation)
-     .then (geoData => {
-         const latitude = geoData.geonames[0].lat;
-         const longitude = geoData.geonames[0].lng;
-         const country = geoData.geonames[0].countryName;
-         const population = geoData.geonames[0].population;
-         console.log(`Latitude: ${latitude}, Longitude:${longitude}, Country: ${country}, Population: ${population}`);
-         const cityData = {latitude, longitude, country, population};
-         console.log(cityData);
-    })
+    // Initiate allData object to store all user input
+    let allData = {};
+    // Store newDepart and newReturn 
+    allData["userInput"]= { newLocation , newDepart: formatDate(newDepart), newReturn: formatDate(newReturn), daysUntilDepart, daysUntilReturn, tripDuration };
+    
+    // Run callApis function to retrieve all data from api calls, then updateUI using that data
+    allData = await callApis(allData);
+
+    // Update UI with data from user and all 3 external apis
+    updateUI(allData);
 }
 
-// Async function to post url to our server and retrieve external api data
-export async function getGeo(url, newLocation) {
-    let response = await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'text/plain',
-            },
-            // Body data type must match "Content-Type" header        
-            body: newLocation,
-            })
-        try{
-            const responseJSON = await response.json();
-            return responseJSON;
-        } catch(error) {
-            console.log(error)
-        }
-    }
