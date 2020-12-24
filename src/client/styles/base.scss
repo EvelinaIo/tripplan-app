@@ -1,6 +1,9 @@
 $primary-color: #3FCDAA;
-$secondary-color: #f0f0f0;
+$secondary-color: #fafafa;
 $body-color: #0B0B0B;
+$medium-heading-desk: 2em;
+$small-heading: 1.5em;
+$hover-color: #189e7d;
 
 header {
     padding: 12px 20px;
@@ -13,10 +16,14 @@ nav {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    img {
+        width: 25px;
+    }
+    h2 {
+        font-size: $medium-heading-desk;
+    }
 }
-nav img {
-    width: 25px;
-}
+
 
 .container {
     color: $body-color;
@@ -26,19 +33,56 @@ nav img {
     align-items: center;
     justify-content: center;
 
-    height: 100vh;
+    min-height: 100vh;
 
     background-color: $primary-color;
 
     position: relative;
+}
 
+.btn-return {
+    width: 170px;
+    height: 38px;
+    background-color: $secondary-color;
+    color: $primary-color;
+    font-size: $small-heading;
+    text-align: center;
+    margin: 10px auto;
+    border: none;
+    border-radius: 3px;
+    padding-top: 5px;
+    display: none;
+    cursor: pointer;
+    transition: ease all .5s;
+    &:hover {
+        background-color: $hover-color;
+        color: $secondary-color;
+    }
 }
 
 footer {
+    width: 100%;
     background-color: $primary-color;
     text-align: center;
     padding: 12px 0;
     color: $secondary-color;
-    font-size: 0.5em;
+    font-size: 0.8em;
+    a {
+      color: $secondary-color;
+      &:hover {
+          color: $body-color;
+      }
+      &:visited {
+          color: $secondary-color;
+      }
+    }
+
 }
 
+@media print {
+    .container, .headline, .headline p {-webkit-print-color-adjust: exact;}
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+  }

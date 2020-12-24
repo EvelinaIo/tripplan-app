@@ -9,27 +9,29 @@
     <header>
         <nav>
             <img class="menu" src="../media/menu.svg">
+            <h2>TRIPPLAN</h2>
             <img class="search" src="../media/search.svg">
         </nav>
     </header>
 
     <main class="container">
         <div class ="headline">
-            Youn new adventure starts here.
+            Your new adventure starts here.
         </div>
         <form class="form">
           <div class ="holder">
             <label for="location">Where to?</label>
-            <input type="text" id="location" placeholder="Enter a location (e.g. Vietnam)"> 
+            <input type="text" id="location" placeholder="Enter a location (e.g. London)"> 
           </div>
           <div class ="holder">
             <label for="date">When to?</label>
             <input type="date" id="departure" class="date" placeholder="Departure">
             <input type="date" id="return" class="date" placeholder="Return">
           </div>
+          <button class="btn-large" id="generate" type = "submit">SUBMIT</button>
         </form>
-        <button class="btn-large" id="generate" type = "submit">SUBMIT</button>
         <div id="error-msg">This is an error</div>
+        <a href='index.html' class="btn-return no-print">Go Back</a>
     </main>
     <footer>Powered by @Udacity. Photo credits <a href='https://pixabay.com' target="_blank">@Pixabay</a></footer>
 </body>
