@@ -3,7 +3,6 @@ $hover-color: #189e7d;
 $secondary-color: #fafafa;
 $body-color: #0B0B0B;
 $small-heading: 1.5em;
-$error-color: #d30000;
 $medium-heading-desk: 2em;
 
 
@@ -88,17 +87,4 @@ $medium-heading-desk: 2em;
     &:hover {
         background-color: $hover-color;
     }
-}
-
-#error-msg {
-    font-size: 1em;
-    text-align: center;
-    color: $error-color;
-    display: none;
-    min-width: 300px;
-    min-height: 25px;
-    margin: 10px;
-    background-color: $secondary-color;
-    padding: 5px;
-    border-radius: 5px;
 }
