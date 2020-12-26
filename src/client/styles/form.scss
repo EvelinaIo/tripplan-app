@@ -46,19 +46,16 @@ $medium-heading-desk: 2em;
         font-size: inherit;
         line-height: inherit;
         margin: 0 0 12px 0;
+        &[type="date"]:before {
+            content: attr(placeholder);
+            color: #aaa;
+            margin-right: 0.5em;
+        }
+        &[type="date"]:focus:before,
+        input[type="date"]:valid:before {
+          content: "";
+      }
 }
-
-input[type="date"]:before {
-    content: attr(placeholder) !important;
-    color: #aaa;
-    margin-right: 0.5em;
-}
-
-input[type="date"]:focus:before,
-  input[type="date"]:valid:before {
-    content: "";
-}
-
 
 .btn-large {
     width: 170px;
@@ -98,8 +95,6 @@ input[type="date"]:focus:before,
     text-align: center;
     color: $error-color;
     display: none;
-    position: absolute;
-    top: 620px;
     min-width: 300px;
     min-height: 25px;
     margin: 10px;

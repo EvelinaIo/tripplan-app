@@ -1,3 +1,6 @@
+/* Here we update UI based on data received from apis
+ * createWeather function is imported as a special treatment to weather display
+*/
 import {createWeather} from './weatherCards.js';
 
 export function updateUI(allData) {
@@ -5,13 +8,12 @@ export function updateUI(allData) {
     const headline = document.querySelector('.headline');
     const container = document.querySelector('.container');
 
-    // Remove form elements to update with results
+    /* Remove form elements to update with results */
     const input = document.querySelectorAll('.holder');
     input.forEach(a=>a.remove());
-    // Remove button
     button.remove();
 
-    // Add photo extracted from Pixabay as background image
+    /* Pixabay photo as background */
     Object.assign(container.style, {background: `url(${allData.photoData.photoUrl}), rgba(11, 11, 11, 0.25)`, backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply'});
     
     // Change headline title
@@ -28,17 +30,18 @@ export function updateUI(allData) {
 
 
     /* Update the form with results.
-    Create document fragment to append children for better performance*/
+     * Create document fragment to append children for better performance.
+    */ 
     const fragment = document.createDocumentFragment();
     const form = document.querySelector('.form');
 
-    // Dates Div
+    /* Dates Div */
     const dates = document.createElement('div');
     dates.className = 'holder';
     dates.innerHTML = `${allData.userInput.newDepart} - ${allData.userInput.newReturn}`;
     Object.assign(dates.style, {justifyContent : 'center', fontSize: '24px', marginBottom: '3px'});
     
-    // Time Until Trip Div
+    /* Time Until Trip Div */
     const timeUntil = document.createElement('div');
     timeUntil.className = 'holder';
     if (allData.userInput.daysUntilDepart === 1) {
@@ -88,9 +91,11 @@ export function updateUI(allData) {
     returnBtn.style.display = 'block';
     fragment.appendChild(printBtn);
 
+    // Append whole fragment back to DOM element form
     form.appendChild(fragment);    
 }
 
+// Make sure that location received will be displayed as Abcd in paragraph
 function capitalizeFirstLetter(string) 
 {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
