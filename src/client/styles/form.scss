@@ -3,7 +3,6 @@ $hover-color: #189e7d;
 $secondary-color: #fafafa;
 $body-color: #0B0B0B;
 $small-heading: 1.5em;
-$error-color: #d30000;
 $medium-heading-desk: 2em;
 
 
@@ -46,19 +45,16 @@ $medium-heading-desk: 2em;
         font-size: inherit;
         line-height: inherit;
         margin: 0 0 12px 0;
+        &[type="date"]:before {
+            content: attr(placeholder);
+            color: #aaa;
+            margin-right: 0.5em;
+        }
+        &[type="date"]:focus:before,
+        input[type="date"]:valid:before {
+          content: "";
+      }
 }
-
-input[type="date"]:before {
-    content: attr(placeholder) !important;
-    color: #aaa;
-    margin-right: 0.5em;
-}
-
-input[type="date"]:focus:before,
-  input[type="date"]:valid:before {
-    content: "";
-}
-
 
 .btn-large {
     width: 170px;
@@ -91,19 +87,4 @@ input[type="date"]:focus:before,
     &:hover {
         background-color: $hover-color;
     }
-}
-
-#error-msg {
-    font-size: 1em;
-    text-align: center;
-    color: $error-color;
-    display: none;
-    position: absolute;
-    top: 620px;
-    min-width: 300px;
-    min-height: 25px;
-    margin: 10px;
-    background-color: $secondary-color;
-    padding: 5px;
-    border-radius: 5px;
 }

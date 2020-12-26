@@ -1,3 +1,7 @@
+/* Here we create a style for the cards holding weather data for each day
+ * Each day will receive this style and then be appended in fragment in resultsUI via a for loop 
+*/
+
 export function createWeather(forecast) {
 
     const weatherCard = document.createElement('div');

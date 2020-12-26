@@ -1,3 +1,8 @@
+/* Here we make all api calls using the object allData
+ * allData stores all variables from userInput
+ * Then by making a server call stores data in respective objects 
+*/
+
 const fetch = require('node-fetch')
 import {extractCityData} from './extractions.js'
 import {extractWeatherData} from './extractions.js'
@@ -7,23 +12,21 @@ export async function callApis (allData) {
     //Call Geonames Api
     const geoData = await callServer('http://localhost:8081/geo', allData)
     allData['cityData'] = extractCityData(geoData);
-    console.log(allData.cityData);
-
+    
+    //Call Weatherbit Api
     const weatherData = await callServer('http://localhost:8081/weather', allData)
     allData['weatherData'] = extractWeatherData(weatherData, allData);
-    console.log(allData.weatherData);
-
+    
+    //Call Pixabay Api
     const photoData = await callServer('http://localhost:8081/photo', allData)
     allData['photoData'] = extractPhotoData(photoData);
-    console.log(allData.photoData);
-    
+      
     return allData;
 }
 
-// Async function to post url to our server and retrieve external api data
+// Async function to post allData to our server and retrieve external api data
 export async function callServer(url, allData) {
     console.log(url);
-    console.log(allData.cityData);
     try {
         const response = await fetch(url, {
         method: 'POST',

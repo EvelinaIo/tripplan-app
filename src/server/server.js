@@ -35,11 +35,7 @@ const server = app.listen(port, ()=> {console.log(`Server is running on port ${p
 app.get('/', (request, response) => {
     response.sendFile('/dist/index.html', { root: __dirname + '/..' })
 })
-//GET Route 
-/*app.get('/getData', (request, response) => {
-    console.log(projectData);
-    response.send(projectData);
-})*/
+
 
 /* API call parts */
 const GEO_USER = `&username=${process.env.GEO_USER}`;
