@@ -9,6 +9,8 @@ module.exports = {
     output: {
         libraryTarget: 'var',
         library: 'Client',
+        /* With zero configuration, clean-webpack-plugin will remove files inside the directory below */
+        path: path.resolve(process.cwd(), 'dist')
     },
     devtool: 'source-map',
     stats: 'verbose',
