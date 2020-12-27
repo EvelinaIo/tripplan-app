@@ -2,8 +2,7 @@
  * Each day will receive this style and then be appended in fragment in resultsUI via a for loop 
 */
 
-export function createWeather(forecast) {
-
+export const createWeather = (forecast) => {
     const weatherCard = document.createElement('div');
     weatherCard.className = 'cards';
     const date = document.createElement('div');
