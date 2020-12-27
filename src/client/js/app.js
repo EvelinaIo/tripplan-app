@@ -4,11 +4,11 @@
  * For dates inserted, if format received is dd-mm-yyyy it is first converted to yyyy-mm-dd
  * to hand over to getTimeRemaining in dateCount.js for the appropriate calculations to occur
  * Then allData is used as a parameter for all apiCalls
+ * The response object from callApis is passed on to updateUI
 */
 
 import {getTimeRemaining} from './dateCount.js';
 import {callApis} from './apiCalls.js';
-import {displayDate} from './extractions.js';
 import {updateUI} from './resultsUI.js'
 
 /* Global Variables */
@@ -94,10 +94,14 @@ export async function performAction(event) {
     allData["userInput"]= { newLocation , newDepart: displayDate(newDepart), newReturn: displayDate(newReturn), daysUntilDepart, daysUntilReturn, tripDuration };
 
     // Run callApis function to retrieve all data from api calls, then updateUI using that data
-    allData = await callApis(allData);
-
+    callApis(allData)
     // Update UI with data from user and all 3 external apis
-    updateUI(allData);
+    .then(res => updateUI(res))
+    .catch(error => {
+        console.log(error);
+        errorMsg.style.display = 'block';
+        errorMsg.innerHTML = 'Sorry, there was a server error. Please try again later';
+    })
 }
 
 /* Here we convert the date input format.
@@ -108,7 +112,7 @@ export async function performAction(event) {
 // This regex describes the dd-mm-yyyy format
 const date_regex = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
 // We check if the input date matched the regex and proceed to conversion
-function convertDate(dateString){
+export const convertDate = (dateString) => {
     if (!(date_regex.test(dateString))) {
       const okDate = dateString;
       console.log('It is OK');
@@ -120,4 +124,13 @@ function convertDate(dateString){
 
       return newDate;
     }         
+  }
+
+// Format date received from yyyy/mm/dd to  display as dd.mm.yy - For later use in updateUI
+export const displayDate = (input) => {
+    var datePart = input.match(/\d+/g),
+    year = datePart[0].substring(2), // get only two digits
+    month = datePart[1], day = datePart[2];
+  
+    return day+'.'+month+'.'+year;
   }

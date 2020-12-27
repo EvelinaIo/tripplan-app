@@ -2,8 +2,8 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Setup empty JS object to act as endpoint for all routes
-projectData = {};
+// Import extraction functions as module
+const extract = require('./extractions');
 
 // Require Express to run server and routes
 const express = require('express');
@@ -50,61 +50,77 @@ const PIXABAY_TYPE = '&image_type=photo';
 const PIXABAY_BASE = 'https://pixabay.com/api/?'
 
 // Initialize object allData to store all user/api responses and send back to client
-const allData = [];
+let allData = {};
+
+app.post('/postData', (req, res) =>{
+    let inputData = req.body;
+    console.log(inputData);
+    allData = inputData
+    res.send(allData);
+})
 
 /* Geonames API */
-app.post('/geo', geoResponse)
+app.get('/geo', geoResponse)
 
 async function geoResponse(req, res) {
-    console.log(req.body);
-    console.log(`Location is: ${req.body.userInput.newLocation}`);
-    const GEO_LOC = req.body.userInput.newLocation;
+    console.log(`Location is: ${allData.userInput.newLocation}`);
+    const GEO_LOC = allData.userInput.newLocation;
     const newGeoUrl = GEO_BASE + GEO_LOC + GEO_ROWS + GEO_USER;
     console.log(newGeoUrl);
     const response = await fetch(newGeoUrl);
     try {
-        const responseJSON = await response.json();
-        console.log(responseJSON);
-        res.send(responseJSON);
+        const geoJSON = await response.json();
+        allData['cityData'] = extract.extractCityData(geoJSON);
+        res.send({message: 'Geolocation Received'});
+        console.log(allData);
+        return allData;
     } catch(error){
         console.log(error);
     }
 }
 
 /* Weatherbit API */
-app.post('/weather', weatherResponse)
+app.get('/weather', weatherResponse)
 
 async function weatherResponse(req, res) {
-    console.log(`Lat & Lng is: ${req.body.cityData}`);
-    const WEATH_LAT = req.body.cityData.latitude;
-    const WEATH_LNG = req.body.cityData.longitude;
+    console.log(req.body);
+    const WEATH_LAT = allData.cityData.latitude;
+    const WEATH_LNG = allData.cityData.longitude;
     const newWeathUrl = WEATHER_BASE + `lat=${WEATH_LAT}&lon=${WEATH_LNG}` + WEATHER_KEY;
     console.log(newWeathUrl);
     const weatherResponse = await fetch(newWeathUrl);
     try {
         const weatherJSON = await weatherResponse.json();
-        console.log(weatherJSON);
-        res.send(weatherJSON);
+        allData['weatherData'] = extract.extractWeatherData(weatherJSON, allData);
+        res.send({message: 'Weather Received'});
+        return allData;
     } catch(error){
         console.log(error);
     }
 }
 
 /* Pixabay API */
-app.post('/photo', photoResponse)
+app.get('/photo', photoResponse)
 
 async function photoResponse(req, res) {
-    console.log(`Location: ${req.body.userInput.newLocation}`);
-    const PIXABAY_PLACE = `&q=${req.body.userInput.newLocation}`;
+    console.log(`Location: ${allData.userInput.newLocation}`);
+    const PIXABAY_PLACE = `&q=${allData.userInput.newLocation}`;
     
     const newPhotoUrl = PIXABAY_BASE + PIXABAY_KEY +PIXABAY_PLACE + PIXABAY_TYPE;
     console.log(newPhotoUrl);
     const photoResponse = await fetch(newPhotoUrl);
     try {
         const photoJSON = await photoResponse.json();
-        console.log(photoJSON);
-        res.send(photoJSON);
+        allData['photoData'] = extract.extractPhotoData(photoJSON);
+        res.send({ message: 'Photo Received'});
+        return allData;
     } catch(error){
         console.log(error);
     }
 }
+
+/* GET Route */
+app.get('/getData', (req,res)=>{
+    console.log(allData);
+    res.send(allData);
+})

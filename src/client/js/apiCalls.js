@@ -1,34 +1,29 @@
-/* Here we make all api calls using the object allData
- * allData stores all variables from userInput
- * Then by making a server call stores data in respective objects 
+/* Here we make all api calls using the object allData and the respective urls
+ * Fist we post the userInput in /postData url
+ * Then we make calls to all server urls concerning our apis
+ * Then we store all data received from get calls to the finalData object
+ * The finalData object will be used to updateUI, if server calls fail null is returned and an error message is displayed
 */
-
 const fetch = require('node-fetch')
-import {extractCityData} from './extractions.js'
-import {extractWeatherData} from './extractions.js'
-import {extractPhotoData} from './extractions.js'
 
-export async function callApis (allData) {
-    //Call Geonames Api
-    const geoData = await callServer('http://localhost:8081/geo', allData)
-    allData['cityData'] = extractCityData(geoData);
-    
-    //Call Weatherbit Api
-    const weatherData = await callServer('http://localhost:8081/weather', allData)
-    allData['weatherData'] = extractWeatherData(weatherData, allData);
-    
-    //Call Pixabay Api
-    const photoData = await callServer('http://localhost:8081/photo', allData)
-    allData['photoData'] = extractPhotoData(photoData);
-      
-    return allData;
+export const callApis = async (allData) => {
+    // Post userInput data to server
+    await postData('http://localhost:8081/postData', allData)
+    const getURL = ['geo', 'weather', 'photo'];
+    // Request data from 3 urls
+    await callServer(`http://localhost:8081/${getURL[0]}`)
+    await callServer(`http://localhost:8081/${getURL[1]}`)
+    await callServer(`http://localhost:8081/${getURL[2]}`)
+    // Store all data in finalData after requesting all info from the getData url
+    const finalData = await callServer('http://localhost:8081/getData')
+
+    return finalData;
 }
 
-// Async function to post allData to our server and retrieve external api data
-export async function callServer(url, allData) {
+// Async function to post allData to our server
+export const postData = async (url, allData) => {
     console.log(url);
-    try {
-        const response = await fetch(url, {
+    try {const response = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
@@ -36,10 +31,24 @@ export async function callServer(url, allData) {
             },
         // Body data type must match "Content-Type" header        
         body: JSON.stringify(allData)
-        });
-        const responseJSON = await response.json();
-        return responseJSON;
-        } catch(error) {
-            console.log(error)
-        }
+    });
+    const responseJSON = await response.json();
+    return responseJSON;
+    } catch (error) {
+        console.log(error)
+        return null
+    }
 }
+// Async function to post allData to our server and retrieve external api data
+export const callServer= async (url) => {  
+    console.log(url);
+    const request = await fetch(url)
+    try {
+        const receivedData = await request.json();
+        return receivedData;
+    } catch (error) {
+        console.log(error);
+        return null
+    }
+}
+

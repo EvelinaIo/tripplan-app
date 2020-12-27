@@ -1,9 +1,10 @@
 /* Here we make all data extractions from the 3 external apis
  * All data retrieved is stored as objects with respective names in object allData
+ * Then it is passed as a module to server to neatly store allData
 */
 
 // Geonames Api data
-export function extractCityData(geoData) {
+function extractCityData(geoData) {
     const latitude = geoData.geonames[0].lat;
     const longitude = geoData.geonames[0].lng;
     const country = geoData.geonames[0].countryName;
@@ -14,7 +15,7 @@ export function extractCityData(geoData) {
 } 
 
 // Weatherbit Api data
-export function extractWeatherData(weatherData, allData) {
+function extractWeatherData(weatherData, allData) {
     // Initiate an array to hold forecast data for each trip day
     const forecastData = [];
 
@@ -44,7 +45,7 @@ export function extractWeatherData(weatherData, allData) {
 }
 
 // Pixabay Api data
-export function extractPhotoData(photoData) {
+function extractPhotoData(photoData) {
     const photoUrl = photoData.hits[0].largeImageURL;
     const pageUrl = photoData.hits[0].pageURL;
 
@@ -52,10 +53,12 @@ export function extractPhotoData(photoData) {
 } 
 
 // Format date received from yyyy/mm/dd to  display as dd.mm.yy - For later use in updateUI
-export function displayDate (input) {
+function displayDate (input) {
     var datePart = input.match(/\d+/g),
     year = datePart[0].substring(2), // get only two digits
     month = datePart[1], day = datePart[2];
   
     return day+'.'+month+'.'+year;
   }
+
+module.exports = {extractCityData, extractWeatherData, extractPhotoData}

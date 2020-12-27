@@ -4,18 +4,18 @@
 */
 
 import {callServer} from "../src/client/js/apiCalls.js"
-
+import {postData}  from "../src/client/js/apiCalls.js"
 /*  Override the global.fetch function with our own fake/mock version of it.
  *  Calling fetch means that we are dealing with two promises, one for fetch and one for json()*/
 global.fetch = jest.fn(() =>
   Promise.resolve({
-    json: () => Promise.resolve({ geonames: [{ countryName: 'United Kingdom' }] }),
+    json: () => Promise.resolve({ message: 'Geolocation Received' }),
   })
 );
 
-it("finds the country when given newLocation from allData", async () => {
+it("Receives a confirmation message when called with url", async () => {
     const apiURL = "http://localhost:8081/geo"
-    // This is an example for the object we use to call the function
+    // We first have to post the userInput to postData
     const allData = {
         userInput: {
             newLocation: 'London' ,
@@ -26,7 +26,8 @@ it("finds the country when given newLocation from allData", async () => {
             tripDuration: 2
         }
     }
-    const response = await callServer(apiURL, allData);
+    await postData('http://localhost:8081/postData', allData)
+    const response = await callServer(apiURL);
 
-    expect(response.geonames[0].countryName).toEqual('United Kingdom');
+    expect(response).toEqual({ message: 'Geolocation Received' });
 });
